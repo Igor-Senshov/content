@@ -786,7 +786,7 @@ render () {
       </Link>
       <div className='w-100' style={{ maxWidth: 400 }}>
         {this.props.viewer.allPosts.edges.map(({node}) =>
-          <Post key={node.id} post={node} />
+          <Post key={node.__id} post={node} />
         )}
       </div>
     </div>
@@ -934,7 +934,7 @@ For the `updater` you can make use of the actual server response to update the c
 
 ![](./img/updater.png)
 
-Next you need to actually use this mutation in `CreatePage.js`. The only problem left right now is that in `CreatePage`, you don't have access to the `viewerId` at the moment - but it's a required argument for the mutation. At this point, you _could_ use `react-router` and pass simply pass the `viewerId` from the `ListPage` on to the `CreatePage` component. However, we want to make proper use of Relay and each component should be responsible for its own data dependencies.
+Next you need to actually use this mutation in `CreatePage.js`. The only problem left right now is that in `CreatePage`, you don't have access to the `viewerId` at the moment - but it's a required argument for the mutation. At this point, you _could_ use `react-router` and simply pass the `viewerId` from the `ListPage` on to the `CreatePage` component. However, we want to make proper use of Relay and each component should be responsible for its own data dependencies.
 
 So, we'll add another `QueryRenderer` for the `CreatePage` component where the `viewerId` can be fetched. Open `CreatePage.js` and update `render` as follows:
 
@@ -1172,7 +1172,7 @@ export default createFragmentContainer(ListPage, graphql`
 Now update the way how the `Post` components are created in `render`:
 
 ```js
-<Post key={node.id} post={node} viewer={this.props.viewer} />
+<Post key={node.__id} post={node} viewer={this.props.viewer} />
 ```
 
 Before you run the app, you need to invoke the Relay compiler again. You can then click on the _Delete_-button on any post and the UI will update immediately.
